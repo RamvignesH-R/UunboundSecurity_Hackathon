@@ -32,12 +32,9 @@ const formSchema = insertWorkflowSchema.extend({
 
 type FormData = z.infer<typeof formSchema>;
 
-const PROVIDERS = ["openai", "anthropic", "gemini", "mistral"];
+const PROVIDERS = ["unbound"];
 const MODELS = {
-  openai: ["gpt-4o", "gpt-4-turbo", "gpt-3.5-turbo"],
-  anthropic: ["claude-3-opus", "claude-3-sonnet", "claude-3-haiku"],
-  gemini: ["gemini-pro", "gemini-1.5-pro"],
-  mistral: ["mistral-large", "mistral-medium"]
+  unbound: ["kimi-k2p5", "kimi-k2-instruct-0905"]
 };
 
 export default function WorkflowBuilder() {
@@ -59,7 +56,7 @@ export default function WorkflowBuilder() {
         {
           order: 1,
           promptTemplate: "",
-          modelConfig: { model: "gpt-4o", temperature: 0.7, provider: "openai" },
+          modelConfig: { model: "kimi-k2p5", temperature: 0.7, provider: "unbound" },
           retryPolicy: { maxRetries: 3, initialDelayMs: 1000, backoffMultiplier: 2 }
         }
       ]
@@ -175,7 +172,7 @@ export default function WorkflowBuilder() {
                 onClick={() => append({ 
                   order: fields.length + 1,
                   promptTemplate: "", 
-                  modelConfig: { model: "gpt-4o", temperature: 0.7, provider: "openai" },
+                  modelConfig: { model: "kimi-k2p5", temperature: 0.7, provider: "unbound" },
                   retryPolicy: { maxRetries: 3, initialDelayMs: 1000, backoffMultiplier: 2 }
                 })}
               >

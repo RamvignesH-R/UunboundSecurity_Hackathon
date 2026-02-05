@@ -1,24 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
 export default defineConfig({
-  plugins: [
-    react(),
-    runtimeErrorOverlay(),
-    ...(process.env.NODE_ENV !== "production" &&
-    process.env.REPL_ID !== undefined
-      ? [
-          await import("@replit/vite-plugin-cartographer").then((m) =>
-            m.cartographer(),
-          ),
-          await import("@replit/vite-plugin-dev-banner").then((m) =>
-            m.devBanner(),
-          ),
-        ]
-      : []),
-  ],
+  plugins: [react()],
+
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),
@@ -26,15 +12,33 @@ export default defineConfig({
       "@assets": path.resolve(import.meta.dirname, "attached_assets"),
     },
   },
+
   root: path.resolve(import.meta.dirname, "client"),
+
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
   },
+
   server: {
-    fs: {
-      strict: true,
-      deny: ["**/.*"],
+    host: "0.0.0.0",
+    port: 5173,
+    hmr: {
+      protocol: "wss",           // Replit uses secure WS
+      clientPort: 443,           // External Replit port
+      host: "0.0.0.0",
+      overlay: false,            // Turn off error popups that can trigger reloads
+    },
+    proxy: {
+      "/api": {
+        target: "http://0.0.0.0:5000",  // your backend Express port
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+    watch: {
+      usePolling: true,          // ← important: use polling instead of fs events (Replit filesystem watching is flaky)
+      interval: 1000,
     },
   },
 });

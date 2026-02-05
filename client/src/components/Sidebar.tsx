@@ -1,12 +1,18 @@
 import { Link, useLocation } from "wouter";
-import { LayoutDashboard, GitBranch, History, Settings, Bot } from "lucide-react";
+import {
+  LayoutDashboard,
+  GitBranch,
+  History,
+  Settings,
+  Bot,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navigation = [
-  { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-  { name: 'Workflows', href: '/workflows', icon: GitBranch },
-  { name: 'Executions', href: '/executions', icon: History },
-  { name: 'Settings', href: '/settings', icon: Settings },
+  { name: "Dashboard", href: "/", icon: LayoutDashboard },
+  { name: "Workflows", href: "/workflows", icon: GitBranch },
+  { name: "Executions", href: "/executions", icon: History },
+  //{ name: 'Settings', href: '/settings', icon: Settings },
 ];
 
 export function Sidebar() {
@@ -19,29 +25,38 @@ export function Sidebar() {
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
             <Bot className="h-5 w-5 text-primary-foreground" />
           </div>
-          <span className="font-display font-bold text-xl tracking-tight text-white">Agentic</span>
+          <span className="font-display font-bold text-xl tracking-tight text-white">
+            Agentic
+          </span>
         </div>
         <nav className="flex flex-1 flex-col">
           <ul role="list" className="flex flex-1 flex-col gap-y-7">
             <li>
               <ul role="list" className="-mx-2 space-y-1">
                 {navigation.map((item) => {
-                  const isActive = location === item.href || (item.href !== '/' && location.startsWith(item.href));
+                  const isActive =
+                    location === item.href ||
+                    (item.href !== "/" && location.startsWith(item.href));
                   return (
                     <li key={item.name}>
-                      <Link 
+                      <Link
                         href={item.href}
                         className={cn(
-                          isActive 
-                            ? "bg-primary/10 text-primary border-r-2 border-primary" 
+                          isActive
+                            ? "bg-primary/10 text-primary border-r-2 border-primary"
                             : "text-muted-foreground hover:bg-white/5 hover:text-white",
-                          "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-all duration-200"
+                          "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-all duration-200",
                         )}
                       >
-                        <item.icon className={cn(
-                          isActive ? "text-primary" : "text-muted-foreground group-hover:text-white",
-                          "h-6 w-6 shrink-0 transition-colors"
-                        )} aria-hidden="true" />
+                        <item.icon
+                          className={cn(
+                            isActive
+                              ? "text-primary"
+                              : "text-muted-foreground group-hover:text-white",
+                            "h-6 w-6 shrink-0 transition-colors",
+                          )}
+                          aria-hidden="true"
+                        />
                         {item.name}
                       </Link>
                     </li>
