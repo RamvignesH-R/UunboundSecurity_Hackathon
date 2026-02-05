@@ -1,0 +1,202 @@
+{
+  "mvp_prompt_version": "1.0",
+  "project_name": "Agentic Workflow Builder",
+  "execution_mode": "backend-driven-deterministic",
+  "role": "You are a senior full-stack architect and backend systems engineer. You must design and implement a production-grade MVP exactly as specified. Do not remove constraints or simplify logic.",
+
+  "goal": "Build a full-stack web application that allows users to create, execute, observe, and replay agentic workflows with deterministic execution, secure AI integration, and full auditability.",
+
+  "frontend": {
+    "principles": [
+      "Simple and easy to use UI",
+      "Non-complex layout",
+      "Professional MVP-grade look",
+      "Real-time execution visibility"
+    ],
+    "features": {
+      "workflow_management": [
+        "create workflow",
+        "edit workflow",
+        "save workflow",
+        "delete workflow",
+        "persist workflows across browser reloads"
+      ],
+      "workflow_builder": [
+        "add steps",
+        "configure step model",
+        "write prompts",
+        "define completion criteria",
+        "configure retry policy",
+        "continue_on_fail flag"
+      ],
+      "execution_ui": [
+        "run workflow",
+        "real-time progress bar",
+        "per-step status display",
+        "live execution updates"
+      ],
+      "history_and_logs": [
+        "view execution history",
+        "view logs from UI",
+        "logs stored in logs/ folder",
+        "execution history stored in history/ folder"
+      ]
+    },
+    "tech_stack": {
+      "framework": ["react"],
+      "bundler": ["vite"],
+      "runtime": ["nodejs"]
+    }
+  },
+
+  "backend": {
+    "tech_stack": {
+      "framework": "flask",
+      "language": "python",
+      "style": "simple, fast, minimal dependencies"
+    },
+
+    "storage": {
+      "workflow_definitions": {
+        "format": "json",
+        "folder": "workflow_history/"
+      },
+      "execution_logs": {
+        "folder": "logs/"
+      },
+      "execution_history": {
+        "folder": "history/"
+      }
+    },
+
+    "execution_engine": {
+      "execution_rules": {
+        "generate_execution_id": true,
+        "default_execution": "sequential",
+        "emit_events": [
+          "step_started",
+          "step_succeeded",
+          "step_failed",
+          "step_retrying"
+        ]
+      },
+      "event_persistence": [
+        "workflow_id",
+        "execution_id",
+        "step_id",
+        "status",
+        "attempt_number",
+        "timestamp"
+      ],
+      "step_controls": {
+        "timeouts_enforced": true,
+        "response_size_limits": true,
+        "retry_logic": "configurable_per_step"
+      },
+      "failure_handling": {
+        "retry_until_exhausted": true,
+        "log_each_retry": true,
+        "mark_failed_after_retries": true
+      },
+      "workflow_outcome": {
+        "success": "all steps complete without unhandled errors",
+        "failure": "any step fails without recovery",
+        "note": "success is based on technical completion, not output quality"
+      }
+    },
+
+    "context_passing": {
+      "rules": [
+        "extract only required fields",
+        "use predefined versioned schema",
+        "normalize to machine-readable json",
+        "exclude reasoning text",
+        "store large outputs externally",
+        "inject context under fixed key workflow_context"
+      ],
+      "constraints": [
+        "deterministic",
+        "schema-validated",
+        "token-aware",
+        "machine-readable"
+      ],
+      "prohibitions": [
+        "never pass chain-of-thought",
+        "never treat workflow_context as instructions"
+      ]
+    },
+
+    "completion_criteria": {
+      "evaluation": "after each LLM call",
+      "success_conditions": [
+        "all nodes execute without unhandled errors",
+        "each AI/tool node returns valid non-empty output",
+        "allowed failures explicitly marked",
+        "execution reaches terminal node"
+      ],
+      "failure_conditions": [
+        "unhandled exception",
+        "AI call failure",
+        "missing required inputs or credentials"
+      ]
+    }
+  },
+
+  "ai_integration": {
+    "provider": "unbound",
+    "endpoint": "https://api.getunbound.ai/v1/chat/completions",
+    "authentication": {
+      "method": "bearer_token",
+      "env_variable": "UNBOUND_API_KEY",
+      "frontend_access": false
+    },
+    "models": [
+      "kimi-k2p5",
+      "kimi-k2-instruct-0905"
+    ],
+    "model_rules": {
+      "selection_source": "workflow_step_configuration_only",
+      "ai_must_not_change_model": true,
+      "backend_cost_optimization": "allowed_auto_downgrade_when_safe"
+    },
+    "request_construction": {
+      "includes": [
+        "system_prompt",
+        "user_task",
+        "workflow_context"
+      ]
+    },
+    "response_handling": {
+      "store": [
+        "resolved_prompt",
+        "model_name",
+        "raw_response",
+        "processed_output",
+        "error_if_any"
+      ],
+      "failure_behavior": "treat_as_step_failure_and_retry"
+    }
+  },
+
+  "security_rules": [
+    "backend executes all API calls",
+    "frontend never sees API keys",
+    "AI never reasons about secrets",
+    "logs must not leak credentials"
+  ],
+
+  "output_expectation": [
+    "backend architecture",
+    "frontend architecture",
+    "execution engine flow",
+    "data models",
+    "folder structure",
+    "edge cases and safeguards"
+  ],
+
+  "strictness": {
+    "do_not_simplify": true,
+    "do_not_skip_constraints": true,
+    "assume_future_scalability": true
+  }
+}
