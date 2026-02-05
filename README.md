@@ -71,3 +71,16 @@ cd client
 npm run dev
 ```
 Open http://localhost:5173 in browser
+
+## Limitations / Notes
+
+Uses SQLite → data resets on Replit restart (use external DB for production)
+Free Replit tier may have cold starts or resource limits
+No user authentication (MVP scope)
+
+## Deployment
+Deployed using Replit Autoscale (free tier with auto-sleep after inactivity).
+Link: https://agentic-workflow--ramvigneshr2004.replit.app/
+Made for hackathon submission – February 2026
+Contact: ramvigneshr2004@gmail.com
+Thanks for checking it out!
